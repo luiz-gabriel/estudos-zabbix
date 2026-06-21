@@ -1,0 +1,39 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: e07816265ff2444c95f5b5e28ae683da
+      name: SSH
+  templates:
+    - uuid: 96b5e26bbf0e4286ab58606c2d6c4cca
+      template: 'Status SSH'
+      name: 'Monitoramento do SSH'
+      description: 'monitoramento do ssh'
+      groups:
+        - name: SSH
+      items:
+        - uuid: e5ddd84ca2f24cc381f5c52662272d72
+          name: 'Status SSH'
+          key: 'net.tcp.service[ssh,,22]'
+          delay: 20s
+          valuemap:
+            name: 'Status de Serviço'
+          triggers:
+            - uuid: c0bb471d048d4235bc7701fa24b1c9d3
+              expression: 'max(/Status SSH/net.tcp.service[ssh,,22],#3)=0'
+              name: 'O serviço do ssh está inativo em {HOST.NAME}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                - tag: Status
+                  value: SSH
+      tags:
+        - tag: 'Seviços de rede'
+          value: SSH
+      valuemaps:
+        - uuid: 92fddc03c76a4d1bbd1f5533bb881a74
+          name: 'Status de Serviço'
+          mappings:
+            - value: '1'
+              newvalue: UP
+            - value: '0'
+              newvalue: DOWN
