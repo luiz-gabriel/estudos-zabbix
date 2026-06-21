@@ -1,2 +1,2 @@
-# Repostório de estudo sobre zabbix
+# Repositório de estudo sobre Zabbix.
 
